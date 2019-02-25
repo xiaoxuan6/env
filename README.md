@@ -3,7 +3,7 @@ env extension for laravel-admin
 
 ## Screenshot
 
-![screenshot](https://github.com/xiaoxuan6/env/blob/master/20190225153258.png)
+![screenshot](https://github.com/xiaoxuan6/env/blob/master/20190225154750.png)
 
 
 ## Requirements
