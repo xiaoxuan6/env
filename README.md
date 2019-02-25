@@ -29,4 +29,5 @@ env extension for laravel-admin
 
 [Awesome](https://github.com/xiaoxuan6/)
  
+参考地址：https://github.com/laravel-admin-extensions/env-manager.git
  
