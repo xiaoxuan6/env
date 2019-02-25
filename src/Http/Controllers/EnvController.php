@@ -139,9 +139,10 @@ class EnvController extends Controller
         $form->disableCreatingCheck();
         $form->disableViewCheck();
         $form->disableEditingCheck();
-        $form->tools(function ($tools){
-            $tools->disableDelete();
-            $tools->disableView();
+        $form->footer(function ($footer) {
+            $footer->disableViewCheck();
+            $footer->disableEditingCheck();
+            $footer->disableCreatingCheck();
         });
 
         return $form;
