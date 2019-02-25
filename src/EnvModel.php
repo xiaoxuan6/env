@@ -80,8 +80,7 @@ class EnvModel extends Model
             return $array[$index];
         }elseif($key){
             $index = array_search($key, array_column($array, 'key'));
-            return
-                [$array[$index]];
+            return [$array[$index]];
         }
 
     }
