@@ -1,11 +1,21 @@
-laravel-admin login-captch
+env extension for laravel-admin
 ======
-Installation
+
+## Screenshot
+
+![screenshot](https://github.com/xiaoxuan6/env/blob/master/20190225153258.png)
+
+
+## Requirements
+
+* laravel-admin >= 1.6
+
+##Installation
 
     1、composer require james.xue/env
     2、在菜单里添加路由  env
 
-Configuration
+##Configuration
  In the extensions section of the config/admin.php file, add some configuration that belongs to this extension.
  
      'extensions' => [
@@ -14,5 +24,9 @@ Configuration
              'enable' => true,
          ]
      ]
+     
+## More resources
+
+[Awesome](https://github.com/xiaoxuan6/)
  
  
