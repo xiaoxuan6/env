@@ -130,40 +130,26 @@ class EnvModel extends Model
 
     /**
      * Delete .env variable
-     * @param $id int
+     * @param $id
      * @return bool
      */
-    protected function del($id){
-        $data = $this->getEnv();
-        $index = array_search($id, array_column($data, 'id'));
-        if($index === false )
-            return false;
-
-        unset($data[$index]);
-        if($this->saveEnv($data))
-            return true;
-        else
-            return false;
-    }
-
-    /**
-     * DeleteAll .env variable
-     * @param $ids array
-     * @return bool
-     */
-    protected function deleteAll($ids){
-        if(!is_array($ids))
-            return false;
-
+    protected function isDel($id){
         $data = $this->getEnv();
         $old_ids = array_column($data, 'id');
 
-        foreach ($ids as $value){
-            $index = array_search($value, $old_ids);
+        if(is_array($id)){
+            foreach ($id as $value){
+                $index = array_search($value, $old_ids);
+                if($index === false )
+                    continue;
+                else
+                    unset($data[$index]);
+            }
+        }else{
+            $index = array_search($id, $old_ids);
             if($index === false )
-                continue;
-            else
-                unset($data[$index]);
+                return false;
+            unset($data[$index]);
         }
 
         if($this->saveEnv($data))

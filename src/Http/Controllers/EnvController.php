@@ -152,7 +152,7 @@ class EnvController extends Controller
     public function delete(Request $request, $id){
         $page = $request->input('page');
 
-        if(!EnvModel::del($id))
+        if(!EnvModel::isDel($id))
             admin_toastr('操作失败', 'error');
         else
             admin_toastr('操作成功','success');
@@ -164,10 +164,7 @@ class EnvController extends Controller
         $ids = $request->input('ids');
         $page = $request->input('page');
 
-        if(!is_array($ids))
-            admin_toastr('请选择操作对象', 'error');
-
-        if(!EnvModel::deleteAll($ids))
+        if(!EnvModel::isDel($ids))
             admin_toastr('操作失败', 'error');
         else
             admin_toastr('操作成功','success');
