@@ -8,7 +8,7 @@ env extension for laravel-admin
 
 ## Requirements
 
-* laravel-admin >= 1.6
+* laravel-admin >= 1.6.9  （很重要！很重要！很重要！ 重要的事情说三遍)
 
 ##Installation
 
