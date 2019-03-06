@@ -13,7 +13,7 @@ env extension for laravel-admin
 ##Installation
 
     1、composer require james.xue/env
-    2、在菜单里添加路由  env
+    2、php artisan admin:import env
 
 ##Configuration
  In the extensions section of the config/admin.php file, add some configuration that belongs to this extension.
