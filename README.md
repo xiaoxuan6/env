@@ -10,12 +10,12 @@ env extension for laravel-admin
 
 * laravel-admin >= 1.6.9  （很重要！很重要！很重要！ 重要的事情说三遍)
 
-##Installation
+## Installation
 
     1、composer require james.xue/env
     2、php artisan admin:import env
 
-##Configuration
+## Configuration
  In the extensions section of the config/admin.php file, add some configuration that belongs to this extension.
  
      'extensions' => [
