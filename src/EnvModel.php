@@ -5,6 +5,7 @@
  */
 namespace James\Env;
 
+use Illuminate\Container\Container;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Pagination\LengthAwarePaginator;
 use Illuminate\Support\Facades\Request;
@@ -13,11 +14,9 @@ class EnvModel extends Model
 {
     protected $primaryKey = 'id';
     protected $keyType = 'int';
-    private $env;
 
     public function __construct(array $attributes = [])
     {
-        $this->env = base_path('/.env');
         parent::__construct($attributes);
     }
 
@@ -62,27 +61,24 @@ class EnvModel extends Model
      */
     private function getEnv($id = null, $key = null)
     {
-        $string = file_get_contents($this->env);
-        $string = array_filter(preg_split('/\n+/', $string));
+        $string = file(self::getEnvFilePath());
         $array = [];
         foreach ($string as $k => $one) {
-            $entry = explode("=", $one, 2);
-            if (!empty($entry[0])) {
-                $array[] = ['id' => $k + 1, 'key' => $entry[0], 'value' => isset($entry[1]) ? $entry[1] : null];
+            $strings = explode("=", str_replace("\n", "", $one), 2);
+            list($index, $value) = (count($strings) == 2 ? $strings : [current($strings),'']);
+            if ($index) {
+                $array[] = ['id' => $k + 1, 'key' => $index, 'value' => isset($value) ? $value : null];
             }
         }
-        if (empty($id) && empty($key)) {
+
+        if($id) {
+            $data = collect($array)->where('id', $id)->toArray();
+            return $data ? current($data) : [];
+        }elseif($key) {
+            $data = collect($array)->where('key', $key)->toArray();
+            return $data ? current($data) : [];
+        }else
             return $array;
-        }
-
-        if($id){
-            $index = array_search($id, array_column($array, 'id'));
-            return $array[$index];
-        }elseif($key){
-            $index = array_search($key, array_column($array, 'key'));
-            return [$array[$index]];
-        }
-
     }
 
     /**
@@ -108,24 +104,15 @@ class EnvModel extends Model
      * @param $array
      * @return bool
      */
-    private function saveEnv($array)
+    public function saveEnv($contents)
     {
-        if (is_array($array)) {
-            $newArray = [];
-            $i = 0;
-            foreach ($array as $env) {
+        $contentArray = collect($contents)->map(function ($value, $index) {
+            return "{$index}={$value}";
+        })->toArray();
 
-                if (preg_match('/\s/', $env['value']) > 0 && (strpos($env['value'], '"') > 0 && strpos($env['value'], '"', -0) > 0)) {
-                    $env['value'] = '"'.$env['value'].'"';
-                }
-                $newArray[$i] = $env['key']."=".$env['value'];
-                $i++;
-            }
-            $newArray = implode("\n", $newArray);
-            file_put_contents($this->env, $newArray);
-            return true;
-        }
-        return false;
+        $content = implode(PHP_EOL, $contentArray);
+        file_put_contents(self::getEnvFilePath(), $content);
+        return true;
     }
 
     /**
@@ -158,4 +145,13 @@ class EnvModel extends Model
             return false;
     }
 
+    /**
+     * 获取.env
+     * @return string
+     */
+    private static function getEnvFilePath()
+    {
+        return Container::getInstance()->environmentPath() . DIRECTORY_SEPARATOR .
+            Container::getInstance()->environmentFile();
+    }
 }
